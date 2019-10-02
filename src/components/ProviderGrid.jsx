@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ProviderCard from './ProviderCard';
 
-const ProviderGrid = ({ providers }) => (
+const ProviderGrid = ({providers}) => (
   <div className="provider-grid">
     {providers.length === 0 ? (
       <div className="center" style={{ width: '100%' }}>
@@ -26,6 +26,7 @@ const ProviderGrid = ({ providers }) => (
 
 ProviderGrid.propTypes = {
   providers: PropTypes.arrayOf(PropTypes.shape({
+    data: PropTypes.array,
     id: PropTypes.number,
     address: PropTypes.string,
     name: PropTypes.string,

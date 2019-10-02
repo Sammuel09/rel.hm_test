@@ -4,12 +4,15 @@ import ProviderGrid from '../components/ProviderGrid';
 import NewProvider from '../components/NewProvider';
 import ApiService from '../utils/apiService';
 import LoadingScreen from '../components/common/LoadingScreen';
+import {jsonGet} from '../utils/utils';
+
 
 class ExplorePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [],
+      initialData: [],
       isLoading: false
     };
   }
@@ -17,10 +20,12 @@ class ExplorePage extends React.Component {
   componentDidMount() {
     this.setLoading(true);
     ApiService.get(ApiService.ENDPOINTS.providers)
-      .then((data) => {
+      .then((res) => {
+        const newData = res.data
         this.setState({
           isLoading: false,
-          data
+          data: newData,
+          initialData: newData
         });
       });
   }
@@ -39,7 +44,17 @@ class ExplorePage extends React.Component {
     // i.e jsonGet(json, 'location.address') to get the address
     //
     // ============== CODE GOES BELOW THIS LINE :) ==============
-    
+    console.log(event.target.value)
+    const filteredData = jsonGet(this.state.data, event.target.value)
+    if (event.target.value){
+      this.setState({
+        data: filteredData
+      });
+    } else {
+      this.setState({
+        data: this.state.initialData
+      });
+    }
   }
 
   render() {
@@ -56,8 +71,9 @@ class ExplorePage extends React.Component {
                   type="text"
                   className="input__style_1 input__search"
                   placeholder="&#xf002; Search with Provider Name, Address, or Type"
-                  onChange={this.filterProviders}
-                  onInput={this.filterProviders}
+                  // onChange={this.filterProviders}
+                  // onInput={this.filterProviders}
+                  onKeyUp={this.filterProviders}
                 />
               </div>
             </div>
